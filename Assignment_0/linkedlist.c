@@ -35,9 +35,23 @@ int addLLElement(LinkedList* pList, int position, ListNode element)
 	}
 	return (pList->currentElementCount);
 }
-int removeLLElement(LinkedList* pList, int position);
+int removeLLElement(LinkedList* pList, int position)
+{
+	// if 문으로 position 값 적절한지 체크
+	// 반복문 돌려서 position 빼고 노드 연결시켜주고
+	// position에 해당하는 노드 free, NULL 처리
+}
 ListNode* getLLElement(LinkedList* pList, int position);
 
-void clearLinkedList(LinkedList* pList);
-int getLinkedListLength(LinkedList* pList);
-void deleteLinkedList(LinkedList* pList);
+void clearLinkedList(LinkedList* pList)
+{
+	// 뒤에서부터 free 하고 NULL 처리
+}
+int getLinkedListLength(LinkedList* pList)
+{
+	// 너무 쉬움
+}
+void deleteLinkedList(LinkedList* pList)
+{
+	// clcear 하고 pList까지 free 및 NULL 처리
+}
