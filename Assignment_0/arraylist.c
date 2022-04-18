@@ -62,7 +62,7 @@ void deleteArrayList(ArrayList* pList)
 {
 	if (pList == NULL || pList->pElement == NULL)
 	{
-		printf("ArrayList is invalid\n");
+		printf("invalid Array List\n");
 		return ;
 	}
 	pList->maxElementCount = 0;
@@ -76,7 +76,7 @@ int isArrayListFull(ArrayList* pList)
 {
 	if (pList == NULL || pList->pElement == NULL)
 	{
-		printf("ArrayList is invalid\n");
+		printf("invalid Array List\n");
 		return (-1);
 	}
 	if (pList->currentElementCount == pList->maxElementCount)
@@ -94,7 +94,7 @@ int addALElement(ArrayList* pList, int position, ArrayListNode element)
 
 	if (pList == NULL || pList->pElement == NULL)
 	{
-		printf("ArrayList is invalid\n");
+		printf("invalid ArrayList\n");
 		return (-1);
 	}
 	if (position < 0 || pList->currentElementCount < position || pList->maxElementCount == position)
@@ -120,12 +120,12 @@ int addALElement(ArrayList* pList, int position, ArrayListNode element)
 int removeALElement(ArrayList* pList, int position)
 {
 	if (pList == NULL || pList->pElement == 0)
-		printf("ArrayList is invalid\n");
+		printf("invalid ArrayList\n");
 	else if (pList->currentElementCount == 0)
 		printf("the ArrayList is empty\n");
-	else if (position < 0 || pList->currentElementCount <= position)
+	else if (position < 0 || (pList->currentElementCount) <= position)
 		printf("position out of bound\n");
-	else if (0 <= position && position < pList->currentElementCount)
+	else if (0 <= position && position < (pList->currentElementCount))
 	{
 		for (int i = position; i < pList->currentElementCount - 1; i++)
 			pList->pElement[i].data = pList->pElement[i + 1].data;
@@ -140,7 +140,7 @@ ArrayListNode* getALElement(ArrayList* pList, int position)
 {
 	if (pList == NULL || pList->pElement == 0)
 	{
-		printf("ArrayList is invalid\n");
+		printf("invalid ArrayList\n");
 		return (NULL);
 	}
 	if (position < 0 || pList->currentElementCount <= position)
@@ -155,7 +155,7 @@ void displayArrayList(ArrayList* pList)
 {
 	if (pList == NULL || pList->pElement == 0)
 	{
-		printf("ArrayList is invalid\n");
+		printf("invalid ArrayList\n");
 		return ;
 	}
 	if (pList->currentElementCount == 0)
@@ -171,7 +171,7 @@ void clearArrayList(ArrayList* pList)
 {
 	if (pList == NULL || pList->pElement == 0)
 	{
-		printf("ArrayList is invalid\n");
+		printf("invalid ArrayList\n");
 		return ;
 	}
 	for (int i = 0; i < pList->currentElementCount; i++)
@@ -183,7 +183,7 @@ int getArrayListLength(ArrayList* pList)
 {
 	if (pList == NULL || pList->pElement == NULL)
 	{
-		printf("ArrayList is invalid\n");
+		printf("invalid ArrayList\n");
 		return (-1);
 	}
 	return (pList->currentElementCount);

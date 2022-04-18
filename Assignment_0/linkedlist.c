@@ -6,29 +6,79 @@
 int	main(void)
 {
 	LinkedList *alist;
-	ListNode *element;
+	ListNode element;
 	ListNode *get;
 	int	i;
 
 	alist = createLinkedList();
-	element = (ListNode *)malloc(sizeof(ListNode));
-	element->data = 33;
-	element->pLink = NULL;
-	for (int i = 0; i < 5; i++)
+	element.data = 33;
+	element.pLink = NULL;
+
+	for (int i = 0; i < 5; i++) // 33, 34, 35, 36, 37
 	{
-		addLLElement(alist, i, *element);
-		element->data++;
+		addLLElement(alist, i, element);
+		element.data++;
 	}
 	for (int i = 0; i < getLinkedListLength(alist); i++)
 		printf("%d ", getLLElement(alist, i)->data);
 	printf("\n");
-	//removeLLElement(alist, 2);
+
+	removeLLElement(alist, 2);
+
+	element.data = 100;
+	addLLElement(alist, 2, element);
+
+	removeLLElement(alist, 4);
+
+	for (int i = 0; i < getLinkedListLength(alist); i++)
+ 		printf("%d ", getLLElement(alist, i)->data);
+	printf("\n");
+
+
+
+	for (int i = 0; i < 5; i++)
+	{
+		addLLElement(alist, i, element);
+		element.data++;
+	}
+	for (int i = 0; i < getLinkedListLength(alist); i++) // 100, 101, 102, 103, 104
+ 		printf("%d ", getLLElement(alist, i)->data);
+	printf("\n");
+
+	printf("get length %d\n", getLinkedListLength(alist));
+
+
+
+	clearLinkedList(alist);
+	for (int i = 0; i < getLinkedListLength(alist); i++)
+ 		printf("%d ", getLLElement(alist, i)->data);
+	printf("\n");
+
+
+
+	for (int i = 0; i < 5; i++)
+	{
+		addLLElement(alist, i, element);
+		element.data++;
+	}
+	for (int i = 0; i < getLinkedListLength(alist); i++) // 105, 106, 107, 108, 109
+ 		printf("%d ", getLLElement(alist, i)->data);
+	printf("\n");
+
+
+
+
 	deleteLinkedList(alist);
-	// for (int i = 0; i < getLinkedListLength(alist); i++)
-	// 	printf("%d ", getLLElement(alist, i)->data);
-	// printf("\n");
-	// printf("size == %d\n", getLinkedListLength(alist));
-	system("leaks a.out");
+	printf("after delete test!\n");
+
+	addLLElement(alist, 0, element);
+	removeLLElement(alist, 0);
+	getLLElement(alist, 0);
+	clearLinkedList(alist);
+	printf("get length %d\n", getLinkedListLength(alist));
+	deleteLinkedList(alist);
+
+//	system("leaks a.out");
 	return(0);
 }
 
@@ -52,28 +102,34 @@ LinkedList* createLinkedList()
 /* 연결리스트 원소 추가 */
 int addLLElement(LinkedList* pList, int position, ListNode element)
 {
-	ListNode *tmp;
+	ListNode *front;
 	ListNode *new;
 
+	if (pList == NULL)
+	{
+		printf("Invalid LinkedList\n");
+		return (-1);
+	}
+	if (pList->currentElementCount == -1)
+	{
+		printf("deleted LinkedList\n");
+		return (-1);
+	}
 	if (position < 0 || position > pList->currentElementCount)
 	{
-		printf("1position out of bound\n");
+		printf("position out of bounds\n");
 		return (-1);
 	}
 	new = (ListNode *)malloc(sizeof(ListNode));
+	if (new == NULL)
+	{
+		printf("malloc failed\n");
+		return (-1);
+	}
 	new->data = element.data;
-	new->pLink = NULL;
-	if (position == 0)
-	{
-		tmp = (pList->headerNode).pLink;
-		(pList->headerNode).pLink = new;
-	}
-	else
-	{
-		tmp = getLLElement(pList, position - 1);
-		element.pLink = tmp->pLink;
-		tmp->pLink = new;
-	}
+	front = getLLElement(pList, position - 1); //
+	new->pLink = front->pLink;
+	front->pLink = new;
 	pList->currentElementCount++;
 	return (pList->currentElementCount);
 }
@@ -82,16 +138,26 @@ int addLLElement(LinkedList* pList, int position, ListNode element)
 int removeLLElement(LinkedList* pList, int position)
 {
 	ListNode *remove;
-	ListNode *tmp;
+	ListNode *front;
 
-	if (position < 0 || position > pList->currentElementCount)
+	if (pList == NULL)
 	{
-		printf("2position is out of bound\n");
+		printf("Invalid LinkedList\n");
 		return (-1);
 	}
-	tmp = getLLElement(pList, position - 1);
-	remove = tmp->pLink;
-	tmp->pLink = remove->pLink;
+	if (pList->currentElementCount == -1)
+	{
+		printf("deleted LinkedList\n");
+		return (-1);
+	}
+	if (position < 0 || position >= pList->currentElementCount)
+	{
+		printf("position out of bound\n");
+		return (-1);
+	}
+	front = getLLElement(pList, position - 1);
+	remove = front->pLink;
+	front->pLink = remove->pLink;
 	free(remove);
 	pList->currentElementCount--;
 	return (pList->currentElementCount);
@@ -100,23 +166,35 @@ int removeLLElement(LinkedList* pList, int position)
 /* 연결리스트 원소 반환 */ /////
 ListNode* getLLElement(LinkedList* pList, int position)
 {
-	ListNode *tmp;
+	ListNode *get;
 	int	cnt;
 
 	if (pList == NULL)
-		printf("the Array List is NULL\n");
-	else if (pList->currentElementCount == 0)
-		printf("LinkedList is empty\n");
-	else if (position < 0 || position >= pList->currentElementCount)
-		printf("3position is out of bound\n");
-  	else
 	{
-		tmp = (pList->headerNode).pLink; // 첫번째 노드
-		for (cnt = 0; cnt < position; cnt++) // position만큼 뒤로 이동
-			tmp = tmp->pLink;
-		return (tmp);
+		printf("Invalid LinkedList\n");
+		return (NULL);
 	}
-	return (NULL);
+	if (pList->currentElementCount == -1)
+	{
+		printf("deleted LinkedList\n");
+		return (NULL);
+	}
+	if (pList->currentElementCount < 0 && position != -1)
+	{
+		printf("the LinkedList is empty\n");
+		return (NULL);
+	}
+	if (position < -1 || position >= pList->currentElementCount)
+	{
+		printf("position out of bound\n");
+		return (NULL);
+	}
+	if (position == -1)
+		return (&(pList->headerNode));
+	get = (pList->headerNode).pLink; // 0번째 노드
+	for (cnt = 0; cnt < position; cnt++) // position만큼 뒤로 이동
+		get = get->pLink;
+	return (get);
 }
 
 /* 연결리스트 초기화 */
@@ -125,17 +203,18 @@ void clearLinkedList(LinkedList* pList)
 	ListNode *clear;
 
 	if (pList == NULL)
-		printf("the Array List is NULL\n");
-	else if (pList->currentElementCount == 0)
-		;
+		printf("Invalid LinkedList\n");
+	else if (pList->currentElementCount == -1)
+		printf("deleted Linked List\n");
 	else
 	{
 		clear = (pList->headerNode).pLink;
-		while (--(pList->currentElementCount))
+		while (pList->currentElementCount)
 		{
-			(pList->headerNode).pLink = clear->pLink;
+			pList->headerNode.pLink = clear->pLink;
 			free(clear);
 			clear = (pList->headerNode).pLink;
+			pList->currentElementCount--;
 		}
 		(pList->headerNode).pLink = NULL;
 	}
@@ -146,7 +225,12 @@ int getLinkedListLength(LinkedList* pList)
 {
 	if (pList == NULL)
 	{
-		printf("the Array List is NULL\n");
+		printf("Invalid LinkedList\n");
+		return(-1);
+	}
+	else if (pList->currentElementCount == -1)
+	{
+		printf("deleted Linked List\n");
 		return (-1);
 	}
 	return (pList->currentElementCount);
@@ -156,7 +240,9 @@ int getLinkedListLength(LinkedList* pList)
 void deleteLinkedList(LinkedList* pList)
 {
 	if (pList == NULL)
-		printf("the Array List is NULL\n");
+		printf("Invalid LinkedList\n");
+	else if (pList->currentElementCount == -1)
+		printf("deleted Linked List\n");
 	else
 	{
 		clearLinkedList(pList);
