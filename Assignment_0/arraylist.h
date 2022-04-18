@@ -14,7 +14,7 @@ typedef struct ArrayListType
 } ArrayList;
 
 ArrayList* createArrayList(int maxElementCount);
-void deleteArrayList(ArrayList* pList);
+void deleteArrayList(ArrayList** pList);
 int isArrayListFull(ArrayList* pList);
 int addALElement(ArrayList* pList, int position, ArrayListNode element);
 int removeALElement(ArrayList* pList, int position);
@@ -25,11 +25,11 @@ int getArrayListLength(ArrayList* pList);
 
 #endif
 
-// 이부분은 어떻게 쓰는거지?
 #ifndef _COMMON_LIST_DEF_
 #define _COMMON_LIST_DEF_
 
 #define TRUE		1
 #define FALSE		0
+#define ERROR		-1
 
 #endif

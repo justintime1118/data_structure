@@ -20,7 +20,11 @@ ListNode* getLLElement(LinkedList* pList, int position);
 
 void clearLinkedList(LinkedList* pList);
 int getLinkedListLength(LinkedList* pList);
-void deleteLinkedList(LinkedList* pList);
+void deleteLinkedList(LinkedList* *pList);
+
+void displayLinkedList(LinkedList* pList);
+void reverseLinkedList(LinkedList* pList);
+
 #endif
 
 #ifndef _COMMON_LIST_DEF_
@@ -28,5 +32,5 @@ void deleteLinkedList(LinkedList* pList);
 
 #define TRUE		1
 #define FALSE		0
-
+#define ERROR		-1
 #endif
