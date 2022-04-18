@@ -84,17 +84,17 @@ ListNode* getLLElement(LinkedList* pList, int position)
 		printf("Invalid LinkedList\n");
 		return (NULL);
 	}
-	if (pList->currentElementCount < 0 && position != ERROR)
+	if (pList->currentElementCount < 0 && position != -1)
 	{
 		printf("the LinkedList is empty\n");
 		return (NULL);
 	}
-	if (position < ERROR || position >= pList->currentElementCount)
+	if (position < -1 || position >= pList->currentElementCount)
 	{
 		printf("position out of bound\n");
 		return (NULL);
 	}
-	if (position == ERROR)
+	if (position == -1)
 		return (&(pList->headerNode));
 	get = (pList->headerNode).pLink;
 	for (cnt = 0; cnt < position; cnt++)
