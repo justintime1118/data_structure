@@ -32,7 +32,7 @@ int addLLElement(LinkedList* pList, int position, ListNode element)
 	}
 	if (position < 0 || position > pList->currentElementCount)
 	{
-		printf("position out of bounds\n");
+		printf("position out of bound\n");
 		return (ERROR);
 	}
 	new = (ListNode *)malloc(sizeof(ListNode));
@@ -84,17 +84,17 @@ ListNode* getLLElement(LinkedList* pList, int position)
 		printf("Invalid LinkedList\n");
 		return (NULL);
 	}
-	if (pList->currentElementCount < 0 && position != -1) // 이거 뭐지?
+	if (pList->currentElementCount == 0 && position != -1)
 	{
 		printf("the LinkedList is empty\n");
 		return (NULL);
 	}
-	if (position < -1 || position >= pList->currentElementCount) // 이거 뭐지?
+	if (position < -1 || position >= pList->currentElementCount)
 	{
 		printf("position out of bound\n");
 		return (NULL);
 	}
-	if (position == -1)
+	if (position == -1) // add 함수에서 0번째 인덱스에 노드를 추가할 수 있게 하려면 이런 장치가 필요함
 		return (&(pList->headerNode));
 	get = (pList->headerNode).pLink;
 	for (cnt = 0; cnt < position; cnt++)
@@ -138,7 +138,7 @@ int getLinkedListLength(LinkedList* pList)
 /* 연결리스트 삭제 */
 void deleteLinkedList(LinkedList** pList)
 {
-	if (pList == NULL)
+	if (*pList == NULL)
 		printf("Invalid LinkedList\n");
 	else
 	{
@@ -154,13 +154,18 @@ void displayLinkedList(LinkedList* pList)
 	int	i;
 
 	if (pList == NULL)
-		printf("Invalid LinkedList\n");
-	else
 	{
-		for (i = 0; i < pList->currentElementCount - 1; i++)
-			printf("%d ", getLLElement(pList, i)->data);
- 		printf("%d\n", getLLElement(pList, i)->data);
+		printf("Invalid LinkedList\n");
+		return ;
 	}
+	if (pList->currentElementCount == 0)
+	{
+		printf("the LinkedList is empty\n");
+		return ;
+	}
+	for (i = 0; i < pList->currentElementCount; i++)
+		printf("%d ", getLLElement(pList, i)->data);
+	printf("\n");
 }
 
 /* 연결리스트 순서 반전 */
