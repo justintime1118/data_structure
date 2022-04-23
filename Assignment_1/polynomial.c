@@ -161,7 +161,6 @@ PolyList* addPolyLists(PolyList* pList1, PolyList* pList2)
 	if (node1 == NULL && node2 == NULL)
 		return (ret);
 	node = (node1 == NULL ? *node2 : *node1);
-	printf("out!\n");
 	while (1)
 	{
 		addPLElement(ret, node);

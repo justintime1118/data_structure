@@ -165,6 +165,7 @@ void deleteDoublyList(DoublyList** pList)
 	}
 }
 
+/*
 int	main(void)
 {
 	DoublyListNode element;
@@ -198,6 +199,5 @@ int	main(void)
 
 	//deleteDoublyList(&lst);
 	//displayDoublyList(lst);
-	// 순환형이 계속 잘 유지되는지 검사
-	// 0이 될 때까지 remove했을 때 헤더노드를 가리키도록 만들어야 함
 }
+*/
