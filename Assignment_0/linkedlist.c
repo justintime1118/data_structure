@@ -193,7 +193,7 @@ void reverseLinkedList(LinkedList* pList)
 	}
 }
 
-/*
+
 int main(void)
 {
 	ListNode	node;
@@ -213,4 +213,3 @@ int main(void)
 //	system("leaks a.out");
 	return (0);
 }
-*/

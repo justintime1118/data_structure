@@ -1,6 +1,8 @@
 #ifndef _ARRAY_STACK_
 #define _ARRAY_STACK_
 
+# include <stdlib.h>
+# include <stdio.h>
 typedef struct StackNodeType
 {
 	int data;
@@ -10,10 +12,10 @@ typedef struct ArrayStackType
 {
 	int maxElementCount;		// 최대 원소 개수
 	int currentElementCount;	// 현재 원소의 개수
-	StackNode* pTopElement;		// Top 노드의 포인터
+	StackNode* pElement;
 } ArrayStack;
 
-ArrayStack* createArrayStack();
+ArrayStack* createArrayStack(int maxElementCount);
 int pushLS(ArrayStack* pStack, StackNode element);
 StackNode* popLS(ArrayStack* pStack);
 StackNode* peekLS(ArrayStack* pStack);
