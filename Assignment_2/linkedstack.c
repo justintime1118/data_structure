@@ -5,9 +5,9 @@ LinkedStack* createLinkedStack()
 	LinkedStack *pStack;
 
 	pStack = (LinkedStack *)malloc(sizeof(LinkedStack));
-	if (pStack == 0)
+	if (pStack == NULL)
 	{
-		printf("malloc failed\n");
+		printf("Error: malloc failed\n");
 		return (NULL);
 	}
 	pStack->currentElementCount = 0;
@@ -19,12 +19,12 @@ int pushLS(LinkedStack* pStack, StackNode element)
 {
 	StackNode *new;
 
-	if (pStack == 0)
+	if (pStack == NULL)
 		return (ERROR);
 	new = malloc(sizeof(StackNode));
-	if (!new)
+	if (new == NULL)
 	{
-		printf("malloc failed\n");
+		printf("Error: malloc failed\n");
 		return (ERROR);
 	}
 	*new = element;
@@ -34,12 +34,11 @@ int pushLS(LinkedStack* pStack, StackNode element)
 	return (TRUE);
 }
 
-// 사용자가 ret에 대한 메모리 관리를 알아서 잘해야 함
 StackNode* popLS(LinkedStack* pStack)
 {
 	StackNode	*ret;
 
-	if (pStack == 0)
+	if (pStack == NULL)
 		return (NULL);
 	if (pStack->currentElementCount == 0)
 		return (NULL);
@@ -52,7 +51,7 @@ StackNode* popLS(LinkedStack* pStack)
 
 StackNode* peekLS(LinkedStack* pStack)
 {
-	if (pStack == 0)
+	if (pStack == NULL)
 		return (NULL);
 	if (pStack->currentElementCount == 0)
 		return (NULL);
@@ -61,7 +60,7 @@ StackNode* peekLS(LinkedStack* pStack)
 
 void deleteLinkedStack(LinkedStack* pStack)
 {
-	if (pStack == 0)
+	if (pStack == NULL)
 		return ;
 	while (pStack->currentElementCount)
 		free(popLS(pStack));
@@ -70,7 +69,7 @@ void deleteLinkedStack(LinkedStack* pStack)
 
 int isLinkedStackEmpty(LinkedStack* pStack)
 {
-	if (pStack == 0)
+	if (pStack == NULL)
 		return (ERROR);
 	return (pStack->currentElementCount == 0);
 }

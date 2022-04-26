@@ -2,14 +2,21 @@
 
 ArrayStack* createArrayStack(int maxElementCount)
 {
-	ArrayStack *pStack = (ArrayStack *)malloc(sizeof(ArrayStack));
+	ArrayStack *pStack;
 
+	pStack = (ArrayStack *)malloc(sizeof(ArrayStack));
+	if (pStack == NULL)
+	{
+		printf("Error: malloc failed\n");
+		return (NULL);
+	}
 	pStack->maxElementCount = maxElementCount;
 	pStack->currentElementCount = 0;
 	pStack->pElement = (StackNode *)malloc(sizeof(StackNode) * maxElementCount);
-	if (pStack->pElement == 0)
+	if (pStack->pElement == NULL)
 	{
-		printf("malloc failed\n");
+		printf("Error: malloc failed\n");
+		free(pStack);
 		return (NULL);
 	}
 	for (int i = 0; i < maxElementCount; i++)
@@ -19,10 +26,10 @@ ArrayStack* createArrayStack(int maxElementCount)
 
 int pushAS(ArrayStack* pStack, StackNode element)
 {
-	if (pStack == 0)
+	if (pStack == NULL)
 		return (ERROR);
 	if (isArrayStackFull(pStack) == TRUE)
-		return (ERROR);
+		return (FALSE);
 	pStack->pElement[pStack->currentElementCount] = element;
 	pStack->currentElementCount++;
 	return (TRUE);
@@ -30,7 +37,7 @@ int pushAS(ArrayStack* pStack, StackNode element)
 
 StackNode* popAS(ArrayStack* pStack)
 {
-	if (pStack == 0)
+	if (pStack == NULL)
 		return (NULL);
 	if (isArrayStackEmpty(pStack) == TRUE)
 		return (NULL);
@@ -40,7 +47,7 @@ StackNode* popAS(ArrayStack* pStack)
 
 StackNode* peekAS(ArrayStack* pStack)
 {
-	if (pStack == 0)
+	if (pStack == NULL)
 		return (NULL);
 	if (isArrayStackEmpty(pStack) == TRUE)
 		return (NULL);
@@ -49,7 +56,7 @@ StackNode* peekAS(ArrayStack* pStack)
 
 void deleteArrayStack(ArrayStack* pStack)
 {
-	if (pStack == 0)
+	if (pStack == NULL)
 		return ;
 	pStack->currentElementCount = 0;
 	pStack->maxElementCount = 0;
@@ -59,21 +66,15 @@ void deleteArrayStack(ArrayStack* pStack)
 
 int isArrayStackFull(ArrayStack* pStack)
 {
-	if (pStack == 0)
-	{
-		printf("pStack is NULL\n");
+	if (pStack == NULL)
 		return (ERROR);
-	}
 	return (pStack->currentElementCount == pStack->maxElementCount);
 }
 
 int isArrayStackEmpty(ArrayStack* pStack)
 {
-	if (pStack == 0)
-	{
-		printf("pStack is NULL\n");
+	if (pStack == NULL)
 		return (ERROR);
-	}
 	return (pStack->currentElementCount == 0);
 }
 
@@ -98,6 +99,5 @@ int	main(void)
 	if (isArrayStackEmpty(pStack))
 		printf("Stack is EMPTY!\n");
 	deleteArrayStack(pStack);
-	printf("peek result = %d\n", peekAS(pStack)->data);
 	return (0);
 }
