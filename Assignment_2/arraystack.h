@@ -6,7 +6,9 @@
 
 typedef struct StackNodeType
 {
-	int data;
+	int x;				// x좌표
+	int y;				// y좌표
+	int direction;		// 가야할 방향. DIRECTION_OFFSETS[NUM_DIRECTIONS]에서 들어갈 인덱스 번호라고 생각하면 됨
 } StackNode;
 
 typedef struct ArrayStackType

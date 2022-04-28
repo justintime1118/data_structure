@@ -37,12 +37,18 @@ int pushAS(ArrayStack* pStack, StackNode element)
 
 StackNode* popAS(ArrayStack* pStack)
 {
+	StackNode *ret;
+
 	if (pStack == NULL)
 		return (NULL);
 	if (isArrayStackEmpty(pStack) == TRUE)
 		return (NULL);
+	ret = malloc(sizeof(StackNode));
+	if (ret == NULL)
+		return (NULL);
 	pStack->currentElementCount--;
-	return (&(pStack->pElement[pStack->currentElementCount]));
+	*ret = pStack->pElement[pStack->currentElementCount];
+	return (ret);
 }
 
 StackNode* peekAS(ArrayStack* pStack)

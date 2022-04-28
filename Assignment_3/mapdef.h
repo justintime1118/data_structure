@@ -3,30 +3,58 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "arraystack.h"
+#include <string.h>
 
 #define WIDTH 8
 #define HEIGHT 8
 
 #define NUM_DIRECTIONS 4
 
-// 정적 전역 변수로 선언된 정수 배열-> 이거 어케 써야함...? 그리고 이게 더 헷갈리는데 그냥 1, 2, 3, 4를 상하좌우로 하면 안되나?
+enum e_bool
+{
+	ERROR = -1,
+	FALSE,
+	TRUE
+};
+
 // offset: x, y
 static int DIRECTION_OFFSETS[NUM_DIRECTIONS][2] = {
-	{0, -1},		// 상 -> 좌
-	{1, 0},			// 우 -> 하
-	{0, 1},			// 하 -> 우
-	{-1, 0}			// 좌 -> 상
-}; // 화살표 표시한대로 바꾸는게 더 이중배열 상 위치로 직관적이지 않나?
+	{0, -1},		// 상
+	{1, 0},			// 우
+	{0, 1},			// 하
+	{-1, 0}			// 좌
+};
 
-// enum은 정수 상수를 편하게 정의하는 것이라고 생각하면 됨
 enum PosStatus { NOT_VISITED = 0, WALL = 1 , VISITED = 2 };
 
 typedef struct MapPositionType
 {
 	int x;				// x좌표
 	int y;				// y좌표
-	int direction;		// 가야할 방향. DIRECTION_OFFSETS[NUM_DIRECTIONS]에서 들어갈 인덱스 번호라고 생각하면 됨
+	int direction;		// 가야할 방향
 } MapPosition;
+
+typedef struct ArrayStackType
+{
+	int maxElementCount;		// 최대 원소 개수
+	int currentElementCount;	// 현재 원소의 개수
+	MapPosition* pElement;
+} ArrayStack;
+
+int    findPath(int mazeArray[HEIGHT][WIDTH], \
+                MapPosition startPos, MapPosition endPos, \
+                ArrayStack *pStack);
+int     		pushMapPosition(ArrayStack *pStack, MapPosition data);
+MapPosition*	popMapPosition(ArrayStack* pStack);
+void    showPath(ArrayStack *pStack);
+void    printMaze(int mazeArray[HEIGHT][WIDTH]);
+
+ArrayStack*		createArrayStack(int maxElementCount);
+int				pushAS(ArrayStack* pStack, MapPosition element);
+MapPosition*	popAS(ArrayStack* pStack);
+MapPosition*	peekAS(ArrayStack* pStack);
+void			deleteArrayStack(ArrayStack* pStack);
+int				isArrayStackFull(ArrayStack* pStack);
+int				isArrayStackEmpty(ArrayStack* pStack);
 
 #endif

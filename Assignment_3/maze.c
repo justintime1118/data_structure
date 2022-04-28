@@ -1,63 +1,118 @@
 #include "mapdef.h"
 
-/*
-헤더에 의문점 써놓은 것부터 해결하고 시작
-ArrayStack에서 노드의 형식을 바꿔주고 그에 맞게 api도 수정
-
-맵 정보를 동적할당해서 저장
-길이 64짜리 빈 ArrayStack도 만들어둔다
-현재 position을 stack에 push
-while (1)
+int     pushMapPosition(ArrayStack *pStack, MapPosition data)
 {
-	pop을 한다
-	사방을 살핀다
-	if 출구로 갈 수 있는 경우
-		종료. 경로 찾음
-	else
-	{
-		if 이동가능한 방향이 있음 && 거기가 안가본 곳임
-			이동 좌표와 방향을 스택에 push
-			맵에 visited 표시
-		else
-			종료. 경로 없음
-	}
+	return (pushAS(pStack, data));
 }
-return (ArrayStack)
 
-*/
-
-/*
-"S0000000"
-"00000000"
-"00000000"
-"00000000"
-"00000000"
-"00000000"
-"00000000"
-"0000000E"
-*/
-int main(int argc, char **argv)
+MapPosition*	popMapPosition(ArrayStack* pStack)
 {
-	int	**map;
+	return (popAS(pStack));
+}
 
-	if (argc != 9)
-		return (1);
-
-	map = malloc(sizeof(int *) * HEIGHT);
-	for (int i = 0; i < HEIGHT; i++)
-	{
-		map[i] = malloc(sizeof(int) * WIDTH);
-		for (int j = 0; j < WIDTH; j++)
-			map[i][j] = argv[i + 1][j] - '0';
-	}
-	/*
+void    printMaze(int mazeArray[HEIGHT][WIDTH])
+{
 	for (int i = 0; i < HEIGHT; i++)
 	{
 		for (int j = 0; j < WIDTH; j++)
-			printf("%d ", map[i][j]);
+			printf("%d ", mazeArray[i][j]);
 		printf("\n");
 	}
-	*/
+}
+
+void    showPath(ArrayStack *pStack)
+{
+	printf("#\t[x, y]\n\n");
+	for (int i = 0; i < pStack->currentElementCount; i++)
+		printf("%d\t[%d, %d]\n", \
+			i, pStack->pElement[i].x, pStack->pElement[i].y);
+}
+
+int    findPath(int mazeArray[HEIGHT][WIDTH], \
+                MapPosition startPos, MapPosition endPos, \
+                ArrayStack *pStack)
+{
+	MapPosition	currPos;
+	MapPosition	*topPos;
+	int			topFlag;
+	int			topDirection;
+	int			xTmp;
+	int			yTmp;
+	int			i;
+
+	topFlag = FALSE;
+	currPos = startPos;
+	while (TRUE)
+	{
+		mazeArray[currPos.y][currPos.x] = VISITED;
+		if (currPos.x == endPos.x && currPos.y == endPos.y)
+			return (printf("RESULT: Path Found!\n"));
+		i = ((topFlag == TRUE) ? topDirection : -1);
+		topFlag = FALSE;
+		while (++i < NUM_DIRECTIONS)
+		{
+			xTmp = currPos.x + DIRECTION_OFFSETS[i][0];
+			yTmp = currPos.y + DIRECTION_OFFSETS[i][1];
+			if (xTmp < 0 || 7 < xTmp || yTmp < 0 || 7 < yTmp)
+				continue ;
+			if (mazeArray[yTmp][xTmp] == WALL \
+				|| mazeArray[yTmp][xTmp] == VISITED)
+				continue ;
+			currPos.direction = i;
+			pushMapPosition(pStack, currPos);
+			currPos.x = xTmp;
+			currPos.y = yTmp;
+			break ;
+		}
+		if (i == NUM_DIRECTIONS)
+		{
+			topPos = popMapPosition(pStack);
+			if (topPos == NULL)
+				return (printf("RESULT: No path..TT\n"));
+			topFlag = TRUE;
+			currPos.x = topPos->x;
+			currPos.y = topPos->y;
+			topDirection = topPos->direction;
+			free(topPos);
+		}
+	}
+}
+
+int main(int argc, char **argv)
+{
+	int mazeArray[HEIGHT][WIDTH] = {
+		{0, 0, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0, 0, 0, 1},
+		{1, 1, 1, 0, 1, 1, 1, 1},
+		{1, 1, 1, 0, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1, 1, 1, 0}
+	};
+	ArrayStack	*pStack;
+	MapPosition	startPos;
+	MapPosition	endPos;
 	
-	//maze(map);
+	startPos.x = 0;
+	startPos.y = 0;
+	startPos.direction = 0;
+	endPos.x = 7;
+	endPos.y = 7;
+	endPos.direction = 0;
+
+	pStack = createArrayStack(64);
+	printf("[map_before]\n");
+	printMaze(mazeArray);
+	printf("---------------\n");
+	printf("\n");
+	findPath(mazeArray, startPos, endPos, pStack);
+	printf("\n");
+	showPath(pStack);
+	printf("\n");
+	printf("[map_after]\n");
+	printMaze(mazeArray);
+	printf("---------------\n");
+	deleteArrayStack(pStack);
+	return (0);
 }

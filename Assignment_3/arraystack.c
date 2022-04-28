@@ -1,4 +1,5 @@
-#include "arraystack.h"
+#include "mapdef.h"
+
 
 ArrayStack* createArrayStack(int maxElementCount)
 {
@@ -12,19 +13,18 @@ ArrayStack* createArrayStack(int maxElementCount)
 	}
 	pStack->maxElementCount = maxElementCount;
 	pStack->currentElementCount = 0;
-	pStack->pElement = (StackNode *)malloc(sizeof(StackNode) * maxElementCount);
+	pStack->pElement = (MapPosition *)malloc(sizeof(MapPosition) * maxElementCount);
 	if (pStack->pElement == NULL)
 	{
 		printf("Error: malloc failed\n");
 		free(pStack);
 		return (NULL);
 	}
-	for (int i = 0; i < maxElementCount; i++)
-		pStack->pElement[i].data = 0;
+	memset(pStack->pElement, 0, pStack->maxElementCount);
 	return (pStack);
 }
 
-int pushAS(ArrayStack* pStack, StackNode element)
+int pushAS(ArrayStack* pStack, MapPosition element)
 {
 	if (pStack == NULL)
 		return (ERROR);
@@ -35,17 +35,23 @@ int pushAS(ArrayStack* pStack, StackNode element)
 	return (TRUE);
 }
 
-StackNode* popAS(ArrayStack* pStack)
+MapPosition* popAS(ArrayStack* pStack)
 {
+	MapPosition *ret;
+
 	if (pStack == NULL)
 		return (NULL);
 	if (isArrayStackEmpty(pStack) == TRUE)
 		return (NULL);
+	ret = malloc(sizeof(MapPosition));
+	if (ret == NULL)
+		return (NULL);
 	pStack->currentElementCount--;
-	return (&(pStack->pElement[pStack->currentElementCount]));
+	*ret = pStack->pElement[pStack->currentElementCount];
+	return (ret);
 }
 
-StackNode* peekAS(ArrayStack* pStack)
+MapPosition* peekAS(ArrayStack* pStack)
 {
 	if (pStack == NULL)
 		return (NULL);
@@ -76,28 +82,4 @@ int isArrayStackEmpty(ArrayStack* pStack)
 	if (pStack == NULL)
 		return (ERROR);
 	return (pStack->currentElementCount == 0);
-}
-
-int	main(void)
-{
-	ArrayStack *pStack;
-	StackNode element;
-
-	element.data = 0;
-	pStack = createArrayStack(10);
-	for (int i = 0; i < 11; i++)
-	{
-		pushAS(pStack, element);
-		element.data++;
-	}
-	if (isArrayStackFull(pStack))
-		printf("Stack is FULL!\n");
-	printf("peek result = %d\n", peekAS(pStack)->data);
-	while (pStack->currentElementCount)
-		printf("%d ", popAS(pStack)->data);
-	printf("\n");
-	if (isArrayStackEmpty(pStack))
-		printf("Stack is EMPTY!\n");
-	deleteArrayStack(pStack);
-	return (0);
 }
