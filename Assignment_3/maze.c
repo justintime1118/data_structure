@@ -44,11 +44,12 @@ int    findPath(int mazeArray[HEIGHT][WIDTH], \
 	currPos = startPos;
 	while (TRUE)
 	{
-		mazeArray[currPos.y][currPos.x] = VISITED;
-		if (currPos.x == endPos.x && currPos.y == endPos.y)
+		mazeArray[currPos.y][currPos.x] = VISITED; // 현 위치 방문으로 표시
+		if (currPos.x == endPos.x && currPos.y == endPos.y) // 출구에 도달했는지 확인
 			return (printf("RESULT: Path Found!\n"));
-		i = ((topFlag == TRUE) ? topDirection : -1);
+		i = ((topFlag == TRUE) ? topDirection : -1); // top을 받아왔으면 top direction, 아니면 다시 0부터 순회하도록 방향 설정
 		topFlag = FALSE;
+		// 이동가능한 방향을 둘러보는 루프
 		while (++i < NUM_DIRECTIONS)
 		{
 			xTmp = currPos.x + DIRECTION_OFFSETS[i][0];
@@ -64,7 +65,7 @@ int    findPath(int mazeArray[HEIGHT][WIDTH], \
 			currPos.y = yTmp;
 			break ;
 		}
-		if (i == NUM_DIRECTIONS)
+		if (i == NUM_DIRECTIONS) // 여기에 걸리면 이동가능한 방향이 없다는 것. pop을 시도한다.
 		{
 			topPos = popMapPosition(pStack);
 			if (topPos == NULL)
