@@ -1,5 +1,6 @@
 #include "linkeddeque.h"
 
+// 선형 양방향 리스트 덱으로 만든다
 LinkedDeque* createLinkedDeque()
 {
 	LinkedDeque *pDeque;
@@ -13,61 +14,128 @@ LinkedDeque* createLinkedDeque()
 
 int insertFrontLD(LinkedDeque* pDeque, DequeNode element)
 {
-	// front 만들어서 pFrontNode = 새로 만든 노드
-	// current++
-	// current == 1인 경우
-		// pRearNode = pFrontNode
+	DequeNode	*new;
+
+	new = malloc(sizeof(DequeNode));
+	new->data = element.data;
+	new->pRLink = pDeque->pFrontNode;
+	new->pLLink = NULL;
+	if (pDeque->currentElementCount == 0)
+	{
+		pDeque->pFrontNode = new;
+		pDeque->pRearNode = new;
+	}
+	else
+	{
+		pDeque->pFrontNode->pLLink = new;
+		pDeque->pFrontNode = new;
+	}
+	pDeque->currentElementCount++;
+	return (pDeque->currentElementCount);
 }
 
 int insertRearLD(LinkedDeque* pDeque, DequeNode element)
 {
-	// rear 만들어서 pRearNode = 새로 만든 노드
-	// current++
-	// current == 1인 경우
-		// pFrontNode = pRearNode
+	DequeNode	*new;
+
+	new = malloc(sizeof(DequeNode));
+	new->data = element.data;
+	new->pRLink = NULL;
+	new->pLLink = pDeque->pRearNode;
+	if (pDeque->currentElementCount == 0)
+		pDeque->pFrontNode = new;
+	else
+		pDeque->pRearNode->pRLink = new;
+	pDeque->pRearNode = new;
+	pDeque->currentElementCount++;
+	return (pDeque->currentElementCount);
 }
 
-DequeNode* deleteFrontLD(LinkedDeque* pDeque)
+int deleteFrontLD(LinkedDeque* pDeque)
 {
-	// 비어있는 경우
-		// NULL을 리턴
-	
-	// tmp에 front 노드 저장. pFrontNode = pFrontNode->pRLink, free(tmp)
-	// current--;
-	// current 갯수가 0이다?
-		// pRearNode = pFrontNode
+	DequeNode	*tmp;
 
+	if (pDeque->currentElementCount == 0)
+		return (0);
+	tmp = pDeque->pFrontNode;
+	pDeque->pFrontNode = pDeque->pFrontNode->pRLink;
+	if (pDeque->currentElementCount == 1)
+		pDeque->pRearNode = NULL;
+	else
+		pDeque->pFrontNode->pLLink = NULL;
+	free(tmp);
+	pDeque->currentElementCount--;
+	return (pDeque->currentElementCount);
 }
 
-DequeNode* deleteRearLD(LinkedDeque* pDeque)
+int deleteRearLD(LinkedDeque* pDeque)
 {
-	// 비어있는 경우
-		// NULL을 리턴
+	DequeNode	*tmp;
 
-	// tmp에 rear 노드 저장. pRearNode = pRearNode->pRLink, free(tmp) 
-	// current--;
-	// current 갯수가 0이다?
-		// pFrontNode = pRearNode
+	if (pDeque->currentElementCount == 0)
+		return (0);
+	tmp = pDeque->pRearNode;
+	pDeque->pRearNode = pDeque->pRearNode->pLLink;
+	if (pDeque->currentElementCount == 1)
+		pDeque->pFrontNode = NULL;
+	else
+		pDeque->pRearNode->pRLink = NULL;
+	free(tmp);
+	pDeque->currentElementCount--;
+	return (pDeque->currentElementCount);
 }
 
 DequeNode* peekFrontLD(LinkedDeque* pDeque)
 {
-
+	return (pDeque->pFrontNode);
 }
 
 DequeNode* peekRearLD(LinkedDeque* pDeque)
 {
-
+	return (pDeque->pRearNode);
 }
 
 void deleteLinkedDeque(LinkedDeque* pDeque)
 {
+	int			i;
+	DequeNode	*target;
+	DequeNode	*next;
 
+	next = pDeque->pFrontNode;
+	while (next != NULL)
+	{
+		target = next;
+		next = next->pRLink;
+		free(target);
+	}
+	free(pDeque);
 }
-
-int isLinkedDequeFull(LinkedDeque* pDeque); // Linked로 구현하면 꽉 찰 수가 없지 않나?
 
 int isLinkedDequeEmpty(LinkedDeque* pDeque)
 {
 	return (pDeque->currentElementCount == 0 ? TRUE : FALSE);
 }
+
+/*
+int	main(void)
+{
+	LinkedDeque *pDeque;
+	DequeNode element;
+	DequeNode *tmp;
+
+	element.data = 42;
+	pDeque = createLinkedDeque();
+	for (int i = 0; i < 5; i++)
+	{
+		insertFrontLD(pDeque, element);
+		element.data++;
+	}
+	deleteFrontLD(pDeque);
+	tmp = peekFrontLD(pDeque);
+	printf("front == %d\n", tmp->data);
+	for (int i = 0; i < 3; i++)
+		deleteFrontLD(pDeque);
+	tmp = peekFrontLD(pDeque);
+	printf("front == %d\n", tmp->data);
+}
+*/

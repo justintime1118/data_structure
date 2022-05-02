@@ -21,12 +21,12 @@ typedef struct LinkedDequeType
 LinkedDeque* createLinkedDeque();
 int insertFrontLD(LinkedDeque* pDeque, DequeNode element);
 int insertRearLD(LinkedDeque* pDeque, DequeNode element);
-DequeNode* deleteFrontLD(LinkedDeque* pDeque);
-DequeNode* deleteRearLD(LinkedDeque* pDeque);
+int deleteFrontLD(LinkedDeque* pDeque);
+int deleteRearLD(LinkedDeque* pDeque);
 DequeNode* peekFrontLD(LinkedDeque* pDeque);
 DequeNode* peekRearLD(LinkedDeque* pDeque);
 void deleteLinkedDeque(LinkedDeque* pDeque);
-// int isLinkedDequeFull(LinkedDeque* pDeque);
+// int isLinkedDequeFull(LinkedDeque* pDeque); -> 꽉 차는 경우가 거의 없을 것으로 생각 됨
 int isLinkedDequeEmpty(LinkedDeque* pDeque);
 
 #endif

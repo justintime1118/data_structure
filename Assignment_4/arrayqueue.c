@@ -1,13 +1,3 @@
-/*
-<구현해야 할 것들>
-큐 배열
-큐 링크
-원형큐 배열로
-데큐 이중연결로
-
--> 큐 배열을 애초에 원형 큐 배열로 구현하고, 데큐가 어쨌든 리스트를 써서 구현하니까 그냥 이 두개로 퉁쳐도 되지않을까?
-*/
-
 #include "arrayqueue.h"
 
 ArrayQueue* createArrayQueue(int maxElementCount)
@@ -20,43 +10,90 @@ ArrayQueue* createArrayQueue(int maxElementCount)
 	pQueue->pElement = malloc(sizeof(ArrayQueueNode) * maxElementCount);
 	if (pQueue->pElement == NULL)
 		return (NULL);
+	pQueue->currentElementCount = 0;
+	pQueue->maxElementCount = maxElementCount;
+	pQueue->front = 0;
+	pQueue->rear = 0;
+	for (int i = 0; i < maxElementCount; i++)
+		pQueue->pElement[i].data = 0;
 	return (pQueue);
 }
 
 int enqueueAQ(ArrayQueue* pQueue, ArrayQueueNode element)
 {
-	/*
-	꽉 찼는지 확인
-	자리 있으면 [(rear + 1) % max] 인덱스에 값 넣기
-	rear 값도 마찬가지로 변경
-	current++
-	*/
+	if (isArrayQueueFull(pQueue) == TRUE)
+		return (pQueue->currentElementCount);
+	if (isArrayQueueEmpty(pQueue) == TRUE)
+		pQueue->pElement[0].data = element.data;
+	else
+	{
+		pQueue->pElement[(pQueue->rear + 1) % pQueue->maxElementCount].data = element.data;
+		pQueue->rear = (pQueue->rear + 1) % pQueue->maxElementCount;
+	}
+	pQueue->currentElementCount++;
+	return (pQueue->currentElementCount);
 }
 
 ArrayQueueNode *dequeueAQ(ArrayQueue* pQueue)
 {
-	/*
-	front = (front + 1) % max
-	current--
-	*/
+	ArrayQueueNode	*ret;
+
+	if (isArrayQueueEmpty(pQueue) == TRUE)
+		return (0);
+	ret = &(pQueue->pElement[pQueue->front]);
+	pQueue->front = (pQueue->front + 1) % pQueue->maxElementCount;
+	pQueue->currentElementCount--;
+	return (ret);
 }
 
 ArrayQueueNode *peekAQ(ArrayQueue* pQueue)
 {
-	// front 인덱스에 접근하여 값 가져오기
+	if (isArrayQueueEmpty(pQueue) == TRUE)
+		return (NULL);
+	else
+		return (&pQueue->pElement[pQueue->front]);
 }
 
 void deleteArrayQueue(ArrayQueue* pQueue)
 {
-	// element 배열 free 후 ArrayQueue free
+	free(pQueue->pElement);
+	free(pQueue);
 }
 
 int isArrayQueueFull(ArrayQueue* pQueue)
 {
-	// current 와 max값 비교
+	return (pQueue->currentElementCount == pQueue->maxElementCount ? TRUE : FALSE);
 }
 
 int isArrayQueueEmpty(ArrayQueue* pQueue)
 {
-	// current 값 비교
+	return (pQueue->currentElementCount == 0 ? TRUE : FALSE);
+}
+
+
+
+int	main(void)
+{
+	ArrayQueue *pQueue;
+	ArrayQueueNode element;
+
+	element.data = 42;
+	pQueue = createArrayQueue(1);
+	for (int i = 0; i < 6; i++)
+	{
+		enqueueAQ(pQueue, element);
+		element.data++;
+	}
+	/*
+	for (int i = 0; i < 6; i++)
+	{
+		printf("%d\n", peekAQ(pQueue)->data);
+		dequeueAQ(pQueue);
+	}
+	*/
+	// 이거 왜 다 출력되냐...?!?!
+	for (int i = 0; i < 100; i++)
+	{
+		printf("%d ", pQueue->pElement[i].data);
+	}
 }
