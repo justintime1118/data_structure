@@ -21,6 +21,11 @@ ArrayQueue* createArrayQueue(int maxElementCount)
 
 int enqueueAQ(ArrayQueue* pQueue, ArrayQueueNode element)
 {
+	if (pQueue == NULL)
+	{
+		printf("invalid Array Queue\n");
+		return (NULL);
+	}
 	if (isArrayQueueFull(pQueue) == TRUE)
 		return (pQueue->currentElementCount);
 	if (isArrayQueueEmpty(pQueue) == TRUE)
@@ -38,8 +43,13 @@ ArrayQueueNode *dequeueAQ(ArrayQueue* pQueue)
 {
 	ArrayQueueNode	*ret;
 
+	if (pQueue == NULL)
+	{
+		printf("invalid Array Queue\n");
+		return (NULL);
+	}
 	if (isArrayQueueEmpty(pQueue) == TRUE)
-		return (0);
+		return (NULL);
 	ret = &(pQueue->pElement[pQueue->front]);
 	pQueue->front = (pQueue->front + 1) % pQueue->maxElementCount;
 	pQueue->currentElementCount--;
@@ -48,6 +58,11 @@ ArrayQueueNode *dequeueAQ(ArrayQueue* pQueue)
 
 ArrayQueueNode *peekAQ(ArrayQueue* pQueue)
 {
+	if (pQueue == NULL)
+	{
+		printf("invalid Array Queue\n");
+		return (NULL);
+	}
 	if (isArrayQueueEmpty(pQueue) == TRUE)
 		return (NULL);
 	else
@@ -56,17 +71,32 @@ ArrayQueueNode *peekAQ(ArrayQueue* pQueue)
 
 void deleteArrayQueue(ArrayQueue* pQueue)
 {
+	if (pQueue == NULL)
+	{
+		printf("invalid Array Queue\n");
+		return (ERROR);
+	}
 	free(pQueue->pElement);
 	free(pQueue);
 }
 
 int isArrayQueueFull(ArrayQueue* pQueue)
 {
+	if (pQueue == NULL)
+	{
+		printf("invalid Array Queue\n");
+		return (ERROR);
+	}
 	return (pQueue->currentElementCount == pQueue->maxElementCount ? TRUE : FALSE);
 }
 
 int isArrayQueueEmpty(ArrayQueue* pQueue)
 {
+	if (pQueue == NULL)
+	{
+		printf("invalid Array Queue\n");
+		return (ERROR);
+	}
 	return (pQueue->currentElementCount == 0 ? TRUE : FALSE);
 }
 
@@ -91,9 +121,5 @@ int	main(void)
 		dequeueAQ(pQueue);
 	}
 	*/
-	// 이거 왜 다 출력되냐...?!?!
-	for (int i = 0; i < 100; i++)
-	{
-		printf("%d ", pQueue->pElement[i].data);
-	}
+
 }

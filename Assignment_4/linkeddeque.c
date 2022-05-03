@@ -6,6 +6,11 @@ LinkedDeque* createLinkedDeque()
 	LinkedDeque *pDeque;
 
 	pDeque = malloc(sizeof(LinkedDeque));
+	if (pDeque == NULL)
+	{
+		printf("malloc failed\n");
+		return (NULL);
+	}
 	pDeque->currentElementCount = 0;
 	pDeque->pFrontNode = NULL;
 	pDeque->pRearNode = NULL;
@@ -16,20 +21,25 @@ int insertFrontLD(LinkedDeque* pDeque, DequeNode element)
 {
 	DequeNode	*new;
 
+	if (pDeque == NULL)
+	{
+		printf("invalid Linked Deque\n");
+		return (ERROR);
+	}
 	new = malloc(sizeof(DequeNode));
+	if (new == NULL)
+	{
+		printf("malloc failed\n");
+		return (ERROR);
+	}
 	new->data = element.data;
 	new->pRLink = pDeque->pFrontNode;
 	new->pLLink = NULL;
 	if (pDeque->currentElementCount == 0)
-	{
-		pDeque->pFrontNode = new;
 		pDeque->pRearNode = new;
-	}
 	else
-	{
 		pDeque->pFrontNode->pLLink = new;
-		pDeque->pFrontNode = new;
-	}
+	pDeque->pFrontNode = new;
 	pDeque->currentElementCount++;
 	return (pDeque->currentElementCount);
 }
@@ -38,7 +48,17 @@ int insertRearLD(LinkedDeque* pDeque, DequeNode element)
 {
 	DequeNode	*new;
 
+	if (pDeque == NULL)
+	{
+		printf("invalid Linked Deque\n");
+		return (ERROR);
+	}
 	new = malloc(sizeof(DequeNode));
+	if (new == NULL)
+	{
+		printf("malloc failed\n");
+		return (ERROR);
+	}
 	new->data = element.data;
 	new->pRLink = NULL;
 	new->pLLink = pDeque->pRearNode;
@@ -55,6 +75,11 @@ int deleteFrontLD(LinkedDeque* pDeque)
 {
 	DequeNode	*tmp;
 
+	if (pDeque == NULL)
+	{
+		printf("invalid Linked Deque\n");
+		return (ERROR);
+	}
 	if (pDeque->currentElementCount == 0)
 		return (0);
 	tmp = pDeque->pFrontNode;
@@ -72,6 +97,11 @@ int deleteRearLD(LinkedDeque* pDeque)
 {
 	DequeNode	*tmp;
 
+	if (pDeque == NULL)
+	{
+		printf("invalid Linked Deque\n");
+		return (ERROR);
+	}
 	if (pDeque->currentElementCount == 0)
 		return (0);
 	tmp = pDeque->pRearNode;
@@ -87,11 +117,21 @@ int deleteRearLD(LinkedDeque* pDeque)
 
 DequeNode* peekFrontLD(LinkedDeque* pDeque)
 {
+	if (pDeque == NULL)
+	{
+		printf("invalid Linked Deque\n");
+		return (NULL);
+	}
 	return (pDeque->pFrontNode);
 }
 
 DequeNode* peekRearLD(LinkedDeque* pDeque)
 {
+	if (pDeque == NULL)
+	{
+		printf("invalid Linked Deque\n");
+		return (NULL);
+	}
 	return (pDeque->pRearNode);
 }
 
@@ -101,6 +141,11 @@ void deleteLinkedDeque(LinkedDeque* pDeque)
 	DequeNode	*target;
 	DequeNode	*next;
 
+	if (pDeque == NULL)
+	{
+		printf("invalid Linked Deque\n");
+		return ;
+	}
 	next = pDeque->pFrontNode;
 	while (next != NULL)
 	{
@@ -113,6 +158,11 @@ void deleteLinkedDeque(LinkedDeque* pDeque)
 
 int isLinkedDequeEmpty(LinkedDeque* pDeque)
 {
+	if (pDeque == NULL)
+	{
+		printf("invalid Linked Deque\n");
+		return (ERROR);
+	}
 	return (pDeque->currentElementCount == 0 ? TRUE : FALSE);
 }
 
@@ -136,6 +186,8 @@ int	main(void)
 	for (int i = 0; i < 3; i++)
 		deleteFrontLD(pDeque);
 	tmp = peekFrontLD(pDeque);
+	deleteLinkedDeque(pDeque);
 	printf("front == %d\n", tmp->data);
+	system("leaks test");
 }
 */
