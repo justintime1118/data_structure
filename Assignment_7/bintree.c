@@ -1,4 +1,4 @@
-#include "bintree.h"
+#include "BST.h"
 
 BinTree* makeBinTree(BinTreeNode rootNode)
 {
@@ -89,7 +89,7 @@ void traversePreorder(BinTreeNode* pParentNode)
 {
 	if (pParentNode == NULL)
 		return ;
-	printf("%c ", pParentNode->data);
+	printf("%d ", pParentNode->data);
 	traversePreorder(pParentNode->pLeftChild);
 	traversePreorder(pParentNode->pRightChild);
 }
@@ -99,7 +99,7 @@ void traverseInorder(BinTreeNode* pParentNode)
 	if (pParentNode == NULL)
 		return ;
 	traverseInorder(pParentNode->pLeftChild);
-	printf("%c ", pParentNode->data);
+	printf("%d ", pParentNode->data);
 	traverseInorder(pParentNode->pRightChild);
 }
 
@@ -109,9 +109,9 @@ void traversePostorder(BinTreeNode* pParentNode)
 		return ;
 	traversePostorder(pParentNode->pLeftChild);
 	traversePostorder(pParentNode->pRightChild);
-	printf("%c ", pParentNode->data);
+	printf("%d ", pParentNode->data);
 }
-
+/*
 int main(void)
 {
 	BinTreeNode element;
@@ -157,3 +157,4 @@ int main(void)
 	traversePostorder(pBinTree->pRootNode);
 	printf("\n");
 }
+*/
